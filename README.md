@@ -170,3 +170,18 @@ nc -zv 10.10.10.10 1-1023
 Port Scan with Curl
 ```
 curl http://10.10.10.10:[1-1024]
+```
+Port Scan with Bash
+```
+#!/bin/bash
+
+for port in {1..1023};
+
+   do
+   : 2> /dev/null > "/dev/tcp/10.10.10.10/$port" && echo "$port"
+   
+   done
+```
+
+     
+  

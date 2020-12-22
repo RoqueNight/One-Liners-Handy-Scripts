@@ -88,8 +88,35 @@ done
 Detecting Possible Reverse Shells:
 ```
 ss -antp | grep ESTAB
+netstat -antp | grep ESTABLISHED
 ```
-
+See what Users are doing in their TTY/PTS
+```
+ps -aef --forest
+ps -aef --forest | grep <user>
+```
+Spam Someone's TTY/PTS
+```
+Get your tty
+tty
+```
+Echo text into the TTY/PTS
+```
+echo "I C You" > /dev/pts/<tty_number>
+```
+Run commands on their behalf (Hook to their TTY/PTS)
+```
+script /dev/pts/<tty_number>
+```
+Spam the TTY/PTS
+```
+cat /dev/urandom > /dev/pts/<tty_number>
+```
+Spam all TTY/PTS except yours
+```
+tty
+for i in {2..10}; do cat /dev/urandom > /dev/pts/$i; done
+```
 Ping Sweeps
 
 Linux
@@ -135,5 +162,7 @@ if __name__ == '__main__':
     while not results.empty():
         ip = results.get()
         print(ip)
+```
+Clear Event Logs
 ```
 

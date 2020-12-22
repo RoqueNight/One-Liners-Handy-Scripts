@@ -163,6 +163,10 @@ if __name__ == '__main__':
         ip = results.get()
         print(ip)
 ```
-Clear Event Logs
+Port Scan with Netcat
 ```
-
+nc -zv 10.10.10.10 1-1023
+```
+Port Scan with Curl
+```
+curl http://10.10.10.10:[1-1024]

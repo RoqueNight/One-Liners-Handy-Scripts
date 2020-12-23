@@ -89,6 +89,19 @@ Detecting Possible Reverse Shells:
 ```
 ss -antp | grep ESTAB
 netstat -antp | grep ESTABLISHED
+ps -aef --forest
+```
+Find files modified in the last 15 min in the web root
+```
+find /var/www/html/ -type f -ls -mtime -15 2>/dev/null
+```
+Find files modified in the last 15 min on the entire system
+```
+find / -type f -mtime -15 -ls 2>/dev/null | grep -v ' /sys\| /proc\| /run'
+```
+Find files modifiled in the last 15 min on a users home directory
+```
+find /home/max -type f -mtime -15 -ls 2>/dev/null
 ```
 See what Users are doing in their TTY/PTS
 ```
@@ -180,8 +193,21 @@ for port in {1..1023};
    do
    : 2> /dev/null > "/dev/tcp/10.10.10.10/$port" && echo "$port"
    
-   done
+ done
+```
+Clear Common Event Logs
+```
+#!/bin/bash
+
+echo '' > /var/log/apache2/access.log
+rm -rf /var/log/apache2/access.log.*
+echo '' > /var/log/apache2/error.log
+rm -rf /var/log/apache2/error.log.*
+echo '' > /var/log/auth.log
+rm -rf /var/log/auth.log.*
+echo '' > /var/log/messages  
+rm -rf /tmp/*
+rm -rf /dev/shm/*
 ```
 
-     
   

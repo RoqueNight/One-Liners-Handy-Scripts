@@ -103,6 +103,15 @@ Find files modifiled in the last 15 min on a users home directory
 ```
 find /home/max -type f -mtime -15 -ls 2>/dev/null
 ```
+Find all files that a specific user owns
+```
+find / -user www-data -ls 2>/dev/null
+```
+Find files owned by a specific group
+```
+find / -group sysadmins -ls 2>/dev/null
+```
+
 See what Users are doing in their TTY/PTS
 ```
 ps -aef --forest

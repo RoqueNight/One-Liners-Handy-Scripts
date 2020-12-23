@@ -126,6 +126,10 @@ Echo text into the TTY/PTS
 ```
 echo "I C You" > /dev/pts/<tty_number>
 ```
+Echo text into all TTY/PTS
+```
+for i in {1..10}; do echo "I C You" > /dev/pts/$i; done
+```
 Run commands on their behalf (Hook to their TTY/PTS)
 ```
 script /dev/pts/<tty_number>

